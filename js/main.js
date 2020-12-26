@@ -66,13 +66,10 @@ searchBtn.addEventListener("click", function () {
       let arrMovies = response.Search;
       let cards = ``;
 
-      // looping arrMovie
       arrMovies.forEach(function (el) {
         cards += showCards(el)
       });
-      // letakan di tempat yang disediakan
       moviePlace.innerHTML = cards;
-
       const showBtn = document.querySelectorAll('.show-btn');
       showBtn.forEach(function (btn) {
 
@@ -92,12 +89,6 @@ searchBtn.addEventListener("click", function () {
     });
 
 });
-
-
-
-
-
-
 
 
 // modal
