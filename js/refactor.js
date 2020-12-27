@@ -1,49 +1,53 @@
 
 // ambil elemen search btn
 const searchBtn = document.querySelector('.search-button');
-// textfiled film yang dicari
-const searchInput = document.querySelector('.input-keyword');
-// tempat card film diletakan
-const moviePlace = document.querySelector(".movie-place");
 
+searchBtn.addEventListener('click', async function () {
+  const searchInput = document.querySelector('.input-keyword');
+  const movies = await getMovies(searchInput.value);
 
-searchBtn.addEventListener("click", function () {
+  updateUI(movies)
+})
 
-  // dalam method fetch(url)
-  fetch('http://www.omdbapi.com/?apikey=ac850f50&s=' + searchInput.value)
+function getMovies(searchMovie) {
+  return fetch('http://www.omdbapi.com/?apikey=ac850f50&s=' + searchMovie)
     .then(response => response.json())
-    .then(function (response) {
-      let arrMovies = response.Search;
-      let cards = ``;
+    .then(response => response.Search);
+}
 
-      arrMovies.forEach(function (el) {
-        cards += showCards(el)
-      });
-      moviePlace.innerHTML = cards;
-      // detail
-      const showBtn = document.querySelectorAll('.show-btn');
-      showBtn.forEach(function (btn) {
+function updateUI(movies) {
+  const moviePlace = document.querySelector(".movie-place");
+  let cards = ``;
+  movies.forEach(function (el) {
+    cards += showCards(el)
+  });
+  moviePlace.innerHTML = cards;
+}
 
-        btn.addEventListener("click", function () {
-          // tempat modal
-
-          const tempatModal = document.querySelector(".modal-body");
-          let idMovie = this.dataset.imdb;
-          fetch('http://www.omdbapi.com/?apikey=ac850f50&i=' + idMovie)
-            .then(response => response.json())
-            .then(response => {
-              movieDetails(response);
-              tempatModal.innerHTML = movieDetails(response);
-            });
-        });
-      });
-
-    });
-
+document.addEventListener('click', async function (e) {
+  if (e.target.className == "btn btn-primary show-btn") {
+    let imdbId = e.target.dataset.imdb;
+    let details = await getDetailMovies(imdbId);
+    uiDetailsMovie(details);
+  }
 });
 
+function getDetailMovies(idMovie) {
+  return fetch('http://www.omdbapi.com/?apikey=ac850f50&i=' + idMovie)
+    .then(response => response.json())
+    .then(response => response);
+}
 
-// modal
+function uiDetailsMovie(details) {
+  const tempatModal = document.querySelector(".modal-body");
+  movieDetails(details);
+  tempatModal.innerHTML = movieDetails(details);
+}
+
+
+
+
+// user interface
 
 function showCards(el) {
   return `<div class="col-md-4 my-5">
