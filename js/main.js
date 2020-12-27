@@ -60,7 +60,7 @@ const moviePlace = document.querySelector(".movie-place");
 searchBtn.addEventListener("click", function () {
 
   // dalam method fetch(url)
-  fetch(`http://www.omdbapi.com/?apikey=ac850f50&s=${searchInput.value}`)
+  fetch('http://www.omdbapi.com/?apikey=ac850f50&s=' + searchInput.value)
     .then(response => response.json())
     .then(function (response) {
       let arrMovies = response.Search;
@@ -77,7 +77,7 @@ searchBtn.addEventListener("click", function () {
           // tempat modal
           const tempatModal = document.querySelector(".modal-body");
           let idMovie = $(this).data('imdb');
-          fetch(`http://www.omdbapi.com/?apikey=ac850f50&i=${idMovie}`)
+          fetch('http://www.omdbapi.com/?apikey=ac850f50&i=' + idMovie)
             .then(response => response.json())
             .then(response => {
               movieDetails(response);
